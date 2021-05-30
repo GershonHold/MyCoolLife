@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_isSupport;
     private TextView tv_intro;
     private TextView tv_username;
+    private TextView tv_check_ranking_list;
 
     private SharedPreferencesUtils sp;
     private static Context context;
@@ -47,9 +48,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_isSupport = (TextView) findViewById(R.id.tv_isSupport);
 //        tv_username = findViewById(R.id.tv_user_name);
 //        tv_intro = findViewById(R.id.tv_intro);
+        tv_check_ranking_list = (TextView)findViewById(R.id.tv_check_ranking_list) ;
 
         tv_set.setOnClickListener(this);
         tv_data.setOnClickListener(this);
+        tv_check_ranking_list.setOnClickListener(this);
     }
 
     @Override
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         assignViews();
-
 
         Bundle bundle = this.getIntent().getExtras();
         String userInfoString = bundle.getString("userInfoString");
@@ -158,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
+            case R.id.tv_check_ranking_list:
+//
         }
     }
 
