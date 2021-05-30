@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CoolLife</string>
+    <string name="hello">listview Tutorial</string>
+    <string name="s_mylistview_btn">基本的listview</string>
+    <string name="s_simpleCursorAdapter_btn">基于CursorAdapter</string>
+    <string name="s_simpleAdapter_btn">基于ListActivity</string>
+    <string name="s_myAdapter_btn">myAdapter</string>
+    <string name="s_view_btn">mSimpleore</string>
+    <string name="list_image">List Image</string>
+</resources>
