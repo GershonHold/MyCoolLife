@@ -9,6 +9,8 @@ import com.litesuits.orm.db.model.ConflictAlgorithm;
 
 import java.util.List;
 
+import cn.bluemobi.server.bean.LocalDbStepsBean;
+
 /**
  * Created by dylan on 2016/1/31.
  */
@@ -54,8 +56,8 @@ public class DbUtils {
      * @param cla
      * @return
      */
-    public static <T> List<T> getQueryAll(Class<T> cla) {
-        return liteOrm.query(cla);
+    public static <T> List<T> getQueryAll(Class<LocalDbStepsBean> cla, String field1,String[] name) {
+        return liteOrm.<LocalDbStepsBean>query(new QueryBuilder(cla).where(field1 + "=?", name));
     }
 
     /**
@@ -69,8 +71,6 @@ public class DbUtils {
     public static <LocalDbStepsBean> List<LocalDbStepsBean> getQueryByWhere(Class<LocalDbStepsBean> cla, String field1, String field2, String[] date, String name) {
 //        return liteOrm.<T>query(new QueryBuilder(cla).where(field1 + "=?", value));
         return liteOrm.<LocalDbStepsBean>query(new QueryBuilder(cla).where(field1 + "=?", date).whereAppendAnd().whereEquals(field2,name));
-
-
 
     }
 

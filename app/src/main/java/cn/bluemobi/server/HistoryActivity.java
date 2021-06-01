@@ -67,7 +67,7 @@ public class HistoryActivity extends AppCompatActivity {
             DbUtils.createDb(this, "jingzhi");
         }
 
-        List<LocalDbStepsBean> stepDatas =   DbUtils.getQueryByWhere(LocalDbStepsBean.class, "date","name",new String[]{DateHelper.getTodayDate()},name);
+        List<LocalDbStepsBean> stepDatas =   DbUtils.getQueryAll(LocalDbStepsBean.class, "name",new String[]{name});
         Logger.d("stepDatas="+stepDatas);
         lv.setAdapter(new CommonAdapter<LocalDbStepsBean>(this,stepDatas,R.layout.item) {
             @Override
