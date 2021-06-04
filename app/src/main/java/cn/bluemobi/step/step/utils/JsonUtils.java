@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bluemobi.server.bean.RankStepDataBean;
 import cn.bluemobi.server.bean.StepsBean;
 import cn.bluemobi.server.bean.UserInfoBean;
 
@@ -36,6 +37,21 @@ public class JsonUtils {
 
         try {
             dataList = JSON.parseArray(json, UserInfoBean.class);
+
+            return dataList;
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return dataList;
+    }
+
+    public static List<RankStepDataBean> getRankStepDataBeanJsonList(String json) {
+
+        List<RankStepDataBean> dataList;
+        dataList = new ArrayList();
+
+        try {
+            dataList = JSON.parseArray(json, RankStepDataBean.class);
 
             return dataList;
         } catch (Exception e) {

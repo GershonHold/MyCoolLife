@@ -55,7 +55,10 @@
             android:name="cn.bluemobi.server.HistoryActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <activity android:name=".MyListView">
+        <activity android:name=".HistoryStepDataListView">
+        </activity>
+
+        <activity android:name=".RankDataListView">
         </activity>
 
         <service

@@ -17,7 +17,7 @@ import java.util.Map;
 import cn.bluemobi.server.bean.StepsBean;
 import cn.bluemobi.step.step.utils.JsonUtils;
 
-public class MyListView extends ListActivity {
+public class HistoryStepDataListView extends ListActivity {
 
 	private static Context context;
 	private String jsonDataString;

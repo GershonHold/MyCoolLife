@@ -1,6 +1,7 @@
 package cn.bluemobi.server.service;
 
 
+import cn.bluemobi.server.thread.GetOneDayRankDataThread;
 import cn.bluemobi.server.thread.GetUsersAllStepsDataThread;
 import cn.bluemobi.server.thread.GetUsersOneDayStepsDataThread;
 import cn.bluemobi.server.thread.StepsItemsThread;
@@ -65,7 +66,16 @@ public class StepsSendService{
         return getUsersOneDayStepsDataThread.getJson();
     }
 
-
+    public static String getOneDayRankStepData(String date) {
+        GetOneDayRankDataThread getOneDayRankDataThread = new GetOneDayRankDataThread("http://47.98.46.194:8080/MyWeb/GetOneDayRankDataForUsr", date);
+        try {
+            getOneDayRankDataThread.start();
+            getOneDayRankDataThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return getOneDayRankDataThread.getJson();
+    }
 
 
 }

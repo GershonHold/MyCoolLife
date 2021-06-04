@@ -4,12 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -153,21 +150,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.tv_data:
 
-                intent = new Intent(MainActivity.this, MyListView.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("jsonDataString", getHistoryStepsData(usr_id));
+                intent = new Intent(MainActivity.this, HistoryStepDataListView.class);
+                Bundle HistoryStepBundle = new Bundle();
+                HistoryStepBundle.putString("jsonDataString", getHistoryStepsData(usr_id));
                 //此处很很关键，做好笔记！
-                intent.putExtras(bundle);
+                intent.putExtras(HistoryStepBundle);
                 startActivity(intent);
                 break;
             case R.id.tv_check_ranking_list:
-//
+//        usr_id = JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getUsr_id();
+
+                System.out.println(getOneDayRankStepsData());
+                intent = new Intent(MainActivity.this, RankDataListView.class);
+                Bundle rankDataBundle = new Bundle();
+                rankDataBundle.putString("rankDataString",getOneDayRankStepsData());
+                //此处很很关键，做好笔记！
+                intent.putExtras(rankDataBundle);
+                startActivity(intent);
+                break;
         }
     }
 
     public static String getHistoryStepsData(int usr_id){
 
         return StepsSendService.getUserAllStepData(usr_id);
+//
+    }
+
+    public static String getOneDayRankStepsData(){
+
+        return StepsSendService.getOneDayRankStepData(DateHelper.getTodayDate());
 //
     }
 
