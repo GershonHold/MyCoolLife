@@ -48,6 +48,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="cn.bluemobi.server.SignUpActivity">
+
+        </activity>
+
         <activity
             android:name="cn.bluemobi.server.SetPlanActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

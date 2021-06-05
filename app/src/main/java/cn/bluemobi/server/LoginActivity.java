@@ -53,7 +53,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void run() {
                             Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                             LoginIsSuccessful = true;
-                            userInfoString = getUserInfo(name);
+                            //后三个参数在此方法中无用，但是必须传入这三个参数
+                            userInfoString = getUserInfo(name,-1,"","");
                             System.out.println(userInfoString);
                         }
                     });
@@ -80,25 +81,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = ((EditText) findViewById(R.id.etname)).getText().toString();
-                String password = ((EditText) findViewById(R.id.etpassword)).getText().toString();
-                if (UserService.signUp(name, password)) {
-                    UserService.addUserInfo(name);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(LoginActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(LoginActivity.this, "注册失败,用户名已存在！", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
 

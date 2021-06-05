@@ -2,6 +2,7 @@ package cn.bluemobi.server.service;
 
 import cn.bluemobi.server.thread.GetOrSendUserInfoThread;
 import cn.bluemobi.server.thread.LoginThread;
+import cn.bluemobi.server.thread.QueryNameThread;
 
 public class UserService {
     public static boolean signIn(String name, String password) {
@@ -27,8 +28,8 @@ public class UserService {
         return loginThread.getResult();
     }
 
-    public static String getUserInfo(String name) {
-        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://47.98.46.194:8080/MyWeb/GetUserInfoForUser", name);
+    public static String getUserInfo(String name,int sex,String province,String city) {
+        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://47.98.46.194:8080/MyWeb/GetUserInfoForUser", name,sex,province,city);
         try {
             getOrSendUserInfoThread.start();
             getOrSendUserInfoThread.join();
@@ -38,8 +39,19 @@ public class UserService {
         return getOrSendUserInfoThread.getJson();
     }
 
-    public static String addUserInfo(String name) {
-        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://47.98.46.194:8080/MyWeb/AddUsrInfo", name);
+    public static boolean queryUserName(String name) {
+        QueryNameThread queryNameThread = new QueryNameThread("http://47.98.46.194:8080/MyWeb/QueryUserName", name);
+        try {
+            queryNameThread.start();
+            queryNameThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return queryNameThread.getResult();
+    }
+
+    public static String addUserInfo(String name,int sex,String province,String city) {
+        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://47.98.46.194:8080/MyWeb/AddUsrInfo", name,sex,province,city);
         try {
             getOrSendUserInfoThread.start();
             getOrSendUserInfoThread.join();

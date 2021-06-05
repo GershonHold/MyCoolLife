@@ -7,24 +7,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class GetOrSendUserInfoThread extends Thread {
+public class QueryNameThread extends Thread {
 
     private String path;
     private String name;
-    private int sex;
-    private String province;
-    private String city;
 
     private String json;
     private boolean result = false;
 
-    public GetOrSendUserInfoThread(String path, String name,int sex,String province,String city) {
+    public QueryNameThread(String path, String name) {
         this.path = path;
         this.name = name;
-        this.sex = sex;
-        this.province = province;
-        this.city = city;
-
     }
 
     @Override
@@ -38,7 +31,7 @@ public class GetOrSendUserInfoThread extends Thread {
             httpURLConnection.setReadTimeout(8000);//设置读取超时时间
             httpURLConnection.setRequestMethod("POST");//设置请求方法,post
 
-            String data = "name=" + URLEncoder.encode(name, "utf-8") + "&sex=" + URLEncoder.encode(String.valueOf(sex), "utf-8") + "&province=" + URLEncoder.encode(province, "utf-8") + "&city=" + URLEncoder.encode(city, "utf-8");//设置数据
+            String data = "name=" + URLEncoder.encode(name, "utf-8");//设置数据
             httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");//设置响应类型
             httpURLConnection.setRequestProperty("Content-Length", data.length() + "");//设置内容长度
             httpURLConnection.setDoOutput(true);//允许输出
@@ -67,7 +60,7 @@ public class GetOrSendUserInfoThread extends Thread {
         }
     }
 
-    public String getJson() {
-        return json;
+    public boolean getResult() {
+        return result;
     }
 }

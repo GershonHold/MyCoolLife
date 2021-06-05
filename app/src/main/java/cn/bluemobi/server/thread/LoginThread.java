@@ -12,10 +12,11 @@ public class LoginThread extends Thread {
         private String path;
         private String name;
         private String password;
-        private boolean result = false;
+        private int resultcode;
+        private boolean result;
         private String json;
 
-        public LoginThread(String path, String name, String password) {
+    public LoginThread(String path, String name, String password) {
             this.path = path;
             this.name = name;
             this.password = password;
@@ -24,8 +25,6 @@ public class LoginThread extends Thread {
         @Override
         public void run() {
             try {
-
-
                 URL url = new URL(path);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setConnectTimeout(8000);//设置连接超时时间
@@ -39,7 +38,8 @@ public class LoginThread extends Thread {
 
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 outputStream.write(data.getBytes("utf-8"));//写入数据
-                result = (httpURLConnection.getResponseCode() == 200);
+
+                result = (httpURLConnection.getResponseCode()==200);
 
                 StringBuilder stringBuilder = new StringBuilder();
                 try (
@@ -61,9 +61,12 @@ public class LoginThread extends Thread {
             }
         }
 
-        public boolean getResult() {
-            return result;
+        public int getResultCode() {
+            return resultcode;
         }
 
+    public boolean getResult() {
+        return result;
+    }
 
 }
