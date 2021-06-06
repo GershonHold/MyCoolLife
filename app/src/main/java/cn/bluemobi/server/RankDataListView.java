@@ -22,6 +22,7 @@ public class RankDataListView extends ListActivity {
 
 	private static Context context;
 	private String rankDataString;
+	private int sex;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +40,8 @@ public class RankDataListView extends ListActivity {
 
 		Bundle bundle = this.getIntent().getExtras();
 		rankDataString = bundle.getString("rankDataString");
+
+
 		Iterator<RankStepDataBean> iterator = JsonUtils.getRankStepDataBeanJsonList(rankDataString).iterator();
 
         while (iterator.hasNext()){
@@ -48,7 +51,11 @@ public class RankDataListView extends ListActivity {
 			map.put("steps", rankStepDataBean.getSteps());
 			map.put("intro", rankStepDataBean.getIntro());
 			map.put("province_city", rankStepDataBean.getProvince()+"-"+rankStepDataBean.getCity());
-			map.put("img", R.drawable.i1);
+			if(rankStepDataBean.getSex()==1){
+				map.put("img", R.drawable.man);
+			}else if(rankStepDataBean.getSex()==0){
+				map.put("img", R.drawable.woman);
+			}
 			list.add(map);
         }
 		

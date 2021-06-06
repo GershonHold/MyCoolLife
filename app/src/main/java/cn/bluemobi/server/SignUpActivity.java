@@ -27,21 +27,19 @@ public class SignUpActivity extends AppCompatActivity {
     private Spinner city_spinner;
     private Spinner province_spinner;
 
-    private int sex;
+    private int sex =-1 ;
     private String name;
     private String password;
-    private String province;
-    private String city;
+    private String province = "";
+    private String city = "";
 
     private ArrayAdapter<CharSequence> province_adapter;
     private ArrayAdapter<CharSequence> city_adapter;
-    private Spinner county_spinner;
     private Integer provinceId, cityId;
-    private EditText display;
     private String strProvince, strCity, strCounty;
 
 
-    private int[] citys = {R.array.beijin_province_item,
+    private int[] citys = {R.array.empty_item,R.array.beijin_province_item,
             R.array.tianjin_province_item, R.array.heibei_province_item,
             R.array.shanxi1_province_item, R.array.neimenggu_province_item,
             R.array.liaoning_province_item, R.array.jilin_province_item,
@@ -81,7 +79,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String name = ((EditText) findViewById(R.id.etname)).getText().toString();
                 String password = ((EditText) findViewById(R.id.etpassword)).getText().toString();
 
-                if (!UserService.signUp(name, password)) {
+                if (!UserService.signUp(name, password,sex,city,province)) {
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -98,10 +96,15 @@ public class SignUpActivity extends AppCompatActivity {
                             if (password.equals("") || password.contains(" ")) {
                                 Toast.makeText(SignUpActivity.this, "密码不合法！", Toast.LENGTH_SHORT).show();
                             }
+                            if (sex==-1) {
+                                Toast.makeText(SignUpActivity.this, "请选择性别！", Toast.LENGTH_SHORT).show();
+                            }
+                            if (province.equals("")||city.equals("")) {
+                                Toast.makeText(SignUpActivity.this, "请选择城市！", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 } else {
-
                     UserService.addUserInfo(name,sex,province,city);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -112,8 +115,6 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
         SexradioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -223,6 +224,15 @@ public class SignUpActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapter);
         // spin.setSelection(0,true);
+    }
+
+    private boolean checkProfile(){
+
+        if(sex==-1||city.equals("")||province.equals("")){
+            return false;
+        }
+
+        return true;
     }
 }
 

@@ -12,14 +12,22 @@ public class LoginThread extends Thread {
         private String path;
         private String name;
         private String password;
-        private int resultcode;
+        private  int sex;
+        private String province;
+        private String city;
+
+
+    private int resultcode;
         private boolean result;
         private String json;
 
-    public LoginThread(String path, String name, String password) {
+    public LoginThread(String path, String name, String password,int sex,String province,String city ) {
             this.path = path;
             this.name = name;
             this.password = password;
+            this.sex = sex;
+            this.province = province;
+            this.city = city;
         }
 
         @Override
@@ -31,7 +39,7 @@ public class LoginThread extends Thread {
                 httpURLConnection.setReadTimeout(8000);//设置读取超时时间
                 httpURLConnection.setRequestMethod("POST");//设置请求方法,post
 
-                String data = "name=" + URLEncoder.encode(name, "utf-8") + "&password=" + URLEncoder.encode(password, "utf-8");//设置数据
+                String data = "name=" + URLEncoder.encode(name, "utf-8") + "&password=" + URLEncoder.encode(password, "utf-8")+ "&sex=" + URLEncoder.encode(String.valueOf(sex), "utf-8")+ "&province=" + URLEncoder.encode(province, "utf-8")+ "&city=" + URLEncoder.encode(String.valueOf(city), "utf-8");//设置数据
                 httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");//设置响应类型
                 httpURLConnection.setRequestProperty("Content-Length", data.length() + "");//设置内容长度
                 httpURLConnection.setDoOutput(true);//允许输出

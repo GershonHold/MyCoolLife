@@ -6,7 +6,7 @@ import cn.bluemobi.server.thread.QueryNameThread;
 
 public class UserService {
     public static boolean signIn(String name, String password) {
-        LoginThread loginThread = new LoginThread("http://47.98.46.194:8080/MyWeb/SignIn", name, password);
+        LoginThread loginThread = new LoginThread("http://47.98.46.194:8080/MyWeb/SignIn", name, password,-1,"","");
         try {
             loginThread.start();
             loginThread.join();
@@ -17,8 +17,8 @@ public class UserService {
         return loginThread.getResult();
     }
 
-    public static boolean signUp(String name, String password) {
-        LoginThread loginThread = new LoginThread("http://47.98.46.194:8080/MyWeb/SignUp", name, password);
+    public static boolean signUp(String name, String password,int sex,String province,String city) {
+        LoginThread loginThread = new LoginThread("http://47.98.46.194:8080/MyWeb/SignUp", name, password,sex,province,city);
         try {
             loginThread.start();
             loginThread.join();

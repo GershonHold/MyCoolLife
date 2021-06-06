@@ -1,15 +1,23 @@
 package cn.bluemobi.server;
 
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import cn.bluemobi.server.bean.UserInfoBean;
 import cn.bluemobi.server.service.DateHelper;
 import cn.bluemobi.server.service.StepsSendService;
 import cn.bluemobi.step.step.UpdateUiCallBack;
@@ -36,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static Context context;
     private int usr_id =1;
     private String name ;
-
+    private String userInfoString;
 
     private void assignViews() {
         tv_data = (TextView) findViewById(R.id.tv_data);
@@ -46,6 +54,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        tv_username = findViewById(R.id.tv_user_name);
 //        tv_intro = findViewById(R.id.tv_intro);
         tv_check_ranking_list = (TextView)findViewById(R.id.tv_check_ranking_list) ;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //添加Toolbar的返回按钮
+//        if(getSupportActionBar() != null)
+//            // Enable the Up button
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//           View barItemProfilePicture = findViewById(R.id.action_favorite);
+//        barItemProfilePicture.setBackground(ContextCompat.getDrawable(this, R.drawable.woman));
+
+//        Menu menu = toolbar.getMenu();
+//           menu.getItem(2).setIcon(R.drawable.woman);
 
         tv_set.setOnClickListener(this);
         tv_data.setOnClickListener(this);
@@ -57,9 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         assignViews();
+        context = MainActivity.this;
 
+        //此处userInforString是包含包括用户id内的所有用户信息Json字符串
         Bundle bundle = this.getIntent().getExtras();
-        String userInfoString = bundle.getString("userInfoString");
+        userInfoString = bundle.getString("userInfoString");
 
         usr_id = JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getUsr_id();
         name = JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName();
@@ -68,6 +92,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initData();
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        System.out.println("执行了onPrepareOptionsMenu");
+
+        if(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getSex()==0){
+            menu.findItem(R.id.action_favorite).setIcon(
+                    R.drawable.woman);
+        }else {
+            menu.findItem(R.id.action_favorite).setIcon(
+                    R.drawable.man);
+        }
+
+
+        // getSupportMenuInflater().inflate(R.menu.book_detail, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.action_favorite:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            case R.id.action_settings:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+
 
 
 

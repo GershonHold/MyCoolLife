@@ -9,6 +9,7 @@ public class RankStepDataBean {
     private int step_plan;
     private String province;
     private String city;
+    private int sex;
 
     public int getUsr_id() {
         return usr_id;
@@ -66,6 +67,14 @@ public class RankStepDataBean {
         this.city = city;
     }
 
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     @Override
     public String toString() {
         return "RankStepDataBean{" +
@@ -76,6 +85,7 @@ public class RankStepDataBean {
                 ", step_plan=" + step_plan +
                 ", province='" + province + '\'' +
                 ", city='" + city + '\'' +
+                ", sex=" + sex +
                 '}';
     }
 }
