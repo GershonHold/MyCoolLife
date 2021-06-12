@@ -3,38 +3,59 @@ package cn.bluemobi.server;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import cn.bluemobi.server.service.UserService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
-public class SignUpActivity extends AppCompatActivity {
+import cn.bluemobi.step.step.utils.JsonUtils;
+import cn.bluemobi.step.step.utils.SharedPreferencesUtils;
 
-    private RadioGroup SexradioGroup;
-    private RadioButton radioButton_Man;
-    private RadioButton radioButton_Woman;
-    private Spinner city_spinner;
-    private Spinner province_spinner;
+import static cn.bluemobi.server.service.UserService.updateUserInfo;
 
-    private int sex =-1 ;
-    private String name;
-    private String password;
-    private String province = "";
-    private String city = "";
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private SharedPreferencesUtils sp;
+
+    private LinearLayout layout_titlebar;
+    private ImageView iv_left;
+    private ImageView iv_right;
+    private EditText et_info;
+    private Button btn_save_profile;
+
+    private String userInfoString;
 
     private ArrayAdapter<CharSequence> province_adapter;
     private ArrayAdapter<CharSequence> city_adapter;
     private Integer provinceId, cityId;
     private String strProvince, strCity, strCounty;
+    private int sex =-1;
+    private String intro = "";
+    private String pre_province = "";
+    private String pre_city = "";
+    private String province = "";
+    private String city = "";
 
+    private RadioGroup SexradioGroup;
+    private RadioButton radioButton_Man;
+    private RadioButton radioButton_Woman;
+    private Spinner city_spinner_profile;
+    private Spinner province_spinner_profile;
+
+    private int infoTextMaxLenth = 99;  //用户的个性签名最长允许的长度为99个字符
 
     private int[] citys = {R.array.empty_item,R.array.beijin_province_item,
             R.array.tianjin_province_item, R.array.heibei_province_item,
@@ -55,60 +76,55 @@ public class SignUpActivity extends AppCompatActivity {
             R.array.hongkong_province_item, R.array.aomen_province_item,
             R.array.taiwan_province_item};
 
+    private void assignViews() {
+        layout_titlebar = (LinearLayout) findViewById(R.id.layout_titlebar);
+        iv_left = (ImageView) findViewById(R.id.iv_left);
+        iv_right = (ImageView) findViewById(R.id.iv_right);
+        et_info = (EditText) findViewById(R.id.et_info);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup_layout);
+        btn_save_profile = (Button) findViewById(R.id.btn_save_profile);
 
         SexradioGroup = (RadioGroup) findViewById(R.id.SexradioGroup);
         radioButton_Man = (RadioButton) findViewById(R.id.radioButton_Man);
         radioButton_Woman = (RadioButton) findViewById(R.id.radioButton_Woman);
-        city_spinner = (Spinner) findViewById(R.id.city_spinner);
-        province_spinner = (Spinner) findViewById(R.id.province_spinner);
+        city_spinner_profile = (Spinner) findViewById(R.id.city_spinner_profile);
+        province_spinner_profile = (Spinner) findViewById(R.id.province_spinner_profile);
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.usr_profile_layout);
+        assignViews();
+        initData();
+        addListener();
         loadSpinner();
 
-        Button btn_signup = (Button) findViewById(R.id.btn_signup);
-        btn_signup.setOnClickListener(new View.OnClickListener() {
+
+        et_info.addTextChangedListener(new TextWatcher() {
+            private int cou = 0;
+            int selectionEnd = 0;
             @Override
-            public void onClick(View view) {
-                String name = ((EditText) findViewById(R.id.etname)).getText().toString();
-                String password = ((EditText) findViewById(R.id.etpassword)).getText().toString();
-
-                if (!UserService.signUp(name, password,sex,city,province)) {
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String name = ((EditText) findViewById(R.id.etname)).getText().toString();
-                            String password = ((EditText) findViewById(R.id.etpassword)).getText().toString();
-
-                            if(!UserService.queryUserName(name)) {
-                                Toast.makeText(SignUpActivity.this, "用户名已存在！", Toast.LENGTH_SHORT).show();
-                            }
-                            if (name.equals("") || name.contains(" ")) {
-                                Toast.makeText(SignUpActivity.this, "用户名不合法！", Toast.LENGTH_SHORT).show();
-                            }
-                            if (password.equals("") || password.contains(" ")) {
-                                Toast.makeText(SignUpActivity.this, "密码不合法！", Toast.LENGTH_SHORT).show();
-                            }
-                            if (sex==-1) {
-                                Toast.makeText(SignUpActivity.this, "请选择性别！", Toast.LENGTH_SHORT).show();
-                            }
-                            if (province.equals("")||city.equals("")) {
-                                Toast.makeText(SignUpActivity.this, "请选择城市！", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                } else {
-                    UserService.addUserInfo(name,sex,province,city);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(SignUpActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                cou = before + count;
+                String editable = et_info.getText().toString();
+                String str = stringFilter(editable); //过滤特殊字符
+                if (!editable.equals(str)) {
+                    et_info.setText(str);
+                }
+                et_info.setSelection(et_info.length());
+                cou = et_info.length();
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (cou > infoTextMaxLenth) {
+                    selectionEnd = et_info.getSelectionEnd();
+                    s.delete(infoTextMaxLenth, selectionEnd);
                 }
             }
         });
@@ -133,62 +149,111 @@ public class SignUpActivity extends AppCompatActivity {
                 System.out.println(sex);
             }
         });
+
+
     }
+
+
+    public static String stringFilter(String str)throws PatternSyntaxException {
+        String regEx = "[/\\:*?<>|\"\n\t]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("");
+    }
+
+    public void initData() {
+
+        Bundle bundle = this.getIntent().getExtras();
+        userInfoString = bundle.getString("userInfoString");
+
+        et_info.setText(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getIntro());
+        pre_province = JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getProvince();
+        pre_city = JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getCity();
+
+        if(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getSex()==1){
+            radioButton_Man.isChecked();
+            SexradioGroup.check(radioButton_Man.getId());
+        }else{
+            radioButton_Woman.isChecked();
+            SexradioGroup.check(radioButton_Woman.getId());
+
+        }
+    }
+
+
+    public void addListener() {
+        iv_left.setOnClickListener(this);
+        iv_right.setOnClickListener(this);
+        btn_save_profile.setOnClickListener(this);
+    }
+
+    private void save() {
+
+        sex = radioButton_Man.isChecked()?1:0;
+        intro = ((EditText) findViewById(R.id.et_info)).getText().toString();
+
+        if(!province.equals("")&&!city.equals("")){
+            updateUserInfo(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName(),sex,intro,province,city);
+        }else{
+            updateUserInfo(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName(),sex,intro,pre_province,pre_city);
+        }
+    }
+
 
     private void loadSpinner() {
 //        display = (EditText) findViewById(R.id.display_edit);
-        province_spinner = (Spinner) findViewById(R.id.province_spinner);
+        province_spinner_profile = (Spinner) findViewById(R.id.province_spinner_profile);
         // 绑定省份的数据
-        province_spinner.setPrompt("请选择省份");
+//        province_spinner_profile.setPrompt("请选择省份");
         province_adapter = ArrayAdapter.createFromResource(this,
                 R.array.province_item, android.R.layout.simple_spinner_item);
         province_adapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        province_spinner.setAdapter(province_adapter);
-        // select(province_spinner, province_adapter, R.array.province_item);
+        province_spinner_profile.setAdapter(province_adapter);
+         select(province_spinner_profile, province_adapter, R.array.province_item);
         // 添加监听，一开始的时候城市，县区的内容是不显示的而是根据省的内容进行联动
-        province_spinner
+        province_spinner_profile
                 .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> arg0, View arg1,
                                                int arg2, long arg3) {
-                        provinceId = province_spinner.getSelectedItemPosition();
-                        strProvince = province_spinner.getSelectedItem()
+                        provinceId = province_spinner_profile.getSelectedItemPosition();
+                        strProvince = province_spinner_profile.getSelectedItem()
                                 .toString();// 得到选择的内容，也就是省的名字
-                        city_spinner = (Spinner) findViewById(R.id.city_spinner);
+                        city_spinner_profile = (Spinner) findViewById(R.id.city_spinner_profile);
 
                         if (true) {
                             System.out.println("province: "
-                                    + province_spinner.getSelectedItem()
+                                    + province_spinner_profile.getSelectedItem()
                                     .toString() + provinceId.toString());
                             //获得选中省份
-                            province = province_spinner.getSelectedItem()
+                            province = province_spinner_profile.getSelectedItem()
                                     .toString();
 
-                            city_spinner = (Spinner) findViewById(R.id.city_spinner);
-                            city_spinner.setPrompt("请选择城市");// 设置标题
-                            select(city_spinner, city_adapter, citys[provinceId]);// 城市一级的数据绑定
+                            city_spinner_profile = (Spinner) findViewById(R.id.city_spinner_profile);
+//                            city_spinner_profile.setPrompt("请选择城市");// 设置标题
+                            select(city_spinner_profile, city_adapter, citys[provinceId]);// 城市一级的数据绑定
                             /*
                              * 通过这个city[provinceId]指明了该省市的City集合 R。array.beijing
                              */
-                            city_spinner
+                            city_spinner_profile
                                     .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                         @Override
                                         public void onItemSelected(
                                                 AdapterView<?> arg0, View arg1,
                                                 int arg2, long arg3) {
-                                            cityId = city_spinner
+                                            cityId = city_spinner_profile
                                                     .getSelectedItemPosition();// 得到city的id
-                                            strCity = city_spinner
+                                            strCity = city_spinner_profile
                                                     .getSelectedItem()
                                                     .toString();// 得到city的内容
                                             Log.v("test", "city: "
-                                                    + city_spinner
+                                                    + city_spinner_profile
                                                     .getSelectedItem()
                                                     .toString()// 输出测试一下
                                                     + cityId.toString());
                                             //获得选中城市
-                                            city = city_spinner
+                                            city = city_spinner_profile
                                                     .getSelectedItem()
                                                     .toString();
                                         }
@@ -212,6 +277,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+
     /* 通过方法动态的添加适配器 */
     private void select(Spinner spin, ArrayAdapter<CharSequence> adapter,
                         int arry) {
@@ -223,19 +289,17 @@ public class SignUpActivity extends AppCompatActivity {
         // spin.setSelection(0,true);
     }
 
-    private boolean checkProfile(){
+    @Override
+    public void onClick(View v) {
 
-        if(sex==-1||city.equals("")||province.equals("")){
-            return false;
+        switch (v.getId()) {
+            case R.id.iv_left:
+                finish();
+                break;
+            case R.id.btn_save_profile:
+                save();
+                break;
         }
-        return true;
     }
 }
-
-
-
-
-
-
-
 

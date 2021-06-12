@@ -39,7 +39,7 @@
                     android:gravity="center_horizontal"
                     android:paddingLeft="10px"
                     android:paddingRight="10px"
-                    android:text="锻炼计划"
+                    android:text="个人资料"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
 
@@ -79,7 +79,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="15dp">
 
                 <TextView
@@ -87,18 +87,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="每日锻炼步数"
+                    android:text="个性签名（不包含特殊字符的99个字符）"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/et_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
                     android:layout_weight="1"
                     android:background="#ffffff"
-                    android:gravity="center_vertical|right"
-                    android:text="7000"
+                    android:gravity="left"
                     android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -115,24 +114,29 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="161dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="提醒"
+                    android:text="地区"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
-                <CheckBox
-                    android:id="@+id/cb_remind"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/province_spinner_profile"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/cb_plan_selector"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:textColor="#000000"
-                    android:textSize="50px" />
+                    android:layout_weight="5"
+                    android:entries="@array/province_item" />
+
+                <Spinner
+                    android:id="@+id/city_spinner_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:entries="@array/empty_item"
+                     />
+
             </LinearLayout>
 
             <ImageView
@@ -147,28 +151,41 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="397dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="center_vertical"
-                    android:text="提醒时间"
+                    android:text="性别"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/tv_remind_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical|right"
-                    android:minWidth="300px"
-                    android:text="21:00"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                <RadioGroup
+                    android:id="@+id/SexradioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioButton_Man"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="男" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton_Woman"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="女" />
+                </RadioGroup>
+
             </LinearLayout>
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_save"
+            android:id="@+id/btn_save_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -178,12 +195,4 @@
             android:textColor="#ffffff"
             android:textSize="18dp" />
 
-        <WebView
-            android:id="@+id/wv"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100px">
-
-        </WebView>
-    </LinearLayout>
+</LinearLayout>

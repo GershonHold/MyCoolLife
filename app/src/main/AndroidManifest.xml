@@ -66,6 +66,10 @@
         <activity android:name=".RankDataListView">
         </activity>
 
+        <activity android:name="cn.bluemobi.server.ProfileActivity">
+
+        </activity>
+
         <service
             android:name="cn.bluemobi.server.service.StepService"
             android:priority="1000">
@@ -80,21 +84,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </service>
-        <service
-            android:name="cn.bluemobi.step.pedometer.StepsDetectService"
-            android:priority="1000"
-            android:process="cn.bluemobi.step.pedometer.StepsDetectService">
-            <intent-filter>
-                <!-- 系统启动完成后会调用-->
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.DATE_CHANGED" />
-                <action android:name="android.intent.action.MEDIA_MOUNTED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.intent.action.ACTION_TIME_TICK" />
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </service>
+
 
     </application>
 

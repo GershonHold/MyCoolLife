@@ -119,12 +119,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
+
+
+//        Intent intent;
+
         switch (item.getItemId()) {
             case R.id.action_favorite:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+
+                Bundle bundle = this.getIntent().getExtras();
+                bundle.putString("userInfoString",userInfoString);
+
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
                 return true;
+
+
             case R.id.action_settings:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...

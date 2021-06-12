@@ -44,7 +44,7 @@ public class SetPlanActivity extends AppCompatActivity implements View.OnClickLi
         layout_titlebar = (LinearLayout) findViewById(R.id.layout_titlebar);
         iv_left = (ImageView) findViewById(R.id.iv_left);
         iv_right = (ImageView) findViewById(R.id.iv_right);
-        tv_step_number = (EditText) findViewById(R.id.tv_step_number);
+        tv_step_number = (EditText) findViewById(R.id.et_info);
         cb_remind = (CheckBox) findViewById(R.id.cb_remind);
         tv_remind_time = (TextView) findViewById(R.id.tv_remind_time);
         btn_save = (Button) findViewById(R.id.btn_save);
