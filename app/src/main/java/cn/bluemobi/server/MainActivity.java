@@ -1,32 +1,32 @@
 package cn.bluemobi.server;
 
-import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import cn.bluemobi.server.bean.UserInfoBean;
+import java.util.List;
+
+import cn.bluemobi.server.bean.WeatherBean;
 import cn.bluemobi.server.service.DateHelper;
-import cn.bluemobi.server.service.StepsSendService;
-import cn.bluemobi.step.step.UpdateUiCallBack;
 import cn.bluemobi.server.service.StepService;
+import cn.bluemobi.server.service.StepsSendService;
+import cn.bluemobi.server.thread.GetWeatherThread;
+import cn.bluemobi.step.step.UpdateUiCallBack;
 import cn.bluemobi.step.step.utils.JsonUtils;
 import cn.bluemobi.step.step.utils.SharedPreferencesUtils;
+import cn.bluemobi.step.step.utils.XmlParserUtil;
 import cn.bluemobi.step.view.StepArcView;
 
-import static android.util.Log.e;
+import static cn.bluemobi.server.service.UserService.getUserInfo;
 
 /**
  * 记步主页
@@ -39,12 +39,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_intro;
     private TextView tv_username;
     private TextView tv_check_ranking_list;
+    private TextView tv_weather_data;
 
     private SharedPreferencesUtils sp;
     private static Context context;
     private int usr_id =1;
     private String name ;
     private String userInfoString;
+
+    public static boolean needToUpdate = false;
+
 
     private void assignViews() {
         tv_data = (TextView) findViewById(R.id.tv_data);
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        tv_username = findViewById(R.id.tv_user_name);
 //        tv_intro = findViewById(R.id.tv_intro);
         tv_check_ranking_list = (TextView)findViewById(R.id.tv_check_ranking_list) ;
+        tv_weather_data = (TextView)findViewById(R.id.tv_weather_data) ;
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_set.setOnClickListener(this);
         tv_data.setOnClickListener(this);
         tv_check_ranking_list.setOnClickListener(this);
+        tv_weather_data.setOnClickListener(this);
     }
 
     @Override
@@ -91,20 +98,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        tv_intro.setText("个人简介："+ JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getIntro());
 
         initData();
+        setWeatherData(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getCity());
+//        flushProfilePicture();
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         System.out.println("执行了onPrepareOptionsMenu");
 
-        if(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getSex()==0){
+        if(JsonUtils.getUserInfoBeanJsonList(getUserInfo(name,-1,"","")).get(0).getSex()==0){
             menu.findItem(R.id.action_favorite).setIcon(
                     R.drawable.woman);
         }else {
             menu.findItem(R.id.action_favorite).setIcon(
                     R.drawable.man);
         }
-
 
         // getSupportMenuInflater().inflate(R.menu.book_detail, menu);
         return super.onPrepareOptionsMenu(menu);
@@ -113,12 +121,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        System.out.println("执行了onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.menu_main,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("执行了onOptionsItemSelected");
 
 
 //        Intent intent;
@@ -132,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
-
                 return true;
 
 
@@ -143,8 +152,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
+                System.out.println("执行了 MainActivity onOptionsItemSelected Default");
                 return super.onOptionsItemSelected(item);
         }
+
     }
 
     public static Context getContext() {
@@ -242,8 +253,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.tv_check_ranking_list:
-//        usr_id = JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getUsr_id();
-
                 System.out.println(getOneDayRankStepsData());
                 intent = new Intent(MainActivity.this, RankDataListView.class);
                 Bundle rankDataBundle = new Bundle();
@@ -252,6 +261,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtras(rankDataBundle);
                 startActivity(intent);
                 break;
+            case R.id.tv_weather_data:
+
+                break;
+
         }
     }
 
@@ -265,6 +278,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return StepsSendService.getOneDayRankStepData(DateHelper.getTodayDate());
 //
+    }
+
+    public  void setWeatherData(String city){
+
+        GetWeatherThread getWeatherThread = new GetWeatherThread(city);
+        try {
+            getWeatherThread.start();
+            getWeatherThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<WeatherBean> weatherBeans = null;
+        weatherBeans = WeatherBean.parse(XmlParserUtil.parse(getWeatherThread.getWeatherdata()));
+
+        System.out.println(weatherBeans.get(0).toString()+"MainActivity289");
+        tv_weather_data.setText(weatherBeans.get(0).toString());
+
+    }
+
+//public void flushProfilePicture(){
+//
+//    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//            Menu menu = toolbar.getMenu();
+//    System.out.println("299"+menu);
+//
+//    if(JsonUtils.getUserInfoBeanJsonList(getUserInfo(name,-1,"","")).get(0).getSex()==0){
+//        menu.findItem(R.id.action_favorite).setIcon(
+//                R.drawable.woman);
+//    }else {
+//        menu.findItem(R.id.action_favorite).setIcon(
+//                R.drawable.man);
+//    }
+//}
+
+    public static void updateUi(){
+
+        if(needToUpdate){
+            needToUpdate = false;
+        }else {
+            needToUpdate = true;
+        }
+        System.out.println(needToUpdate+"321");
     }
 
     @Override

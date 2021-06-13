@@ -15,36 +15,40 @@ public class WeatherBean {
     public static List<WeatherBean> parse(List<String> nodes) {
 
         ArrayList<WeatherBean> weatherBeans = new ArrayList<>();
+
+
         WeatherBean weatherBean1 = new WeatherBean();
         List<String> pic1 = new ArrayList<>();
-        pic1.add("a_" + nodes.get(8));
-        pic1.add("a_" + nodes.get(9));
+//        pic1.add("a_" + nodes.get(8));
+//        pic1.add("a_" + nodes.get(9));
         weatherBean1.setPics(pic1);
         weatherBean1.setDate(nodes.get(6));
         weatherBean1.setTemperature(nodes.get(5));
         weatherBean1.setWind(nodes.get(7));
+
+
         weatherBeans.add(weatherBean1);
 
 
-        WeatherBean weatherBean2 = new WeatherBean();
-        List<String> pic2 = new ArrayList<>();
-        pic2.add("a_" + nodes.get(15));
-        pic2.add("a_" + nodes.get(16));
-        weatherBean1.setPics(pic2);
-        weatherBean2.setDate(nodes.get(13));
-        weatherBean2.setTemperature(nodes.get(12));
-        weatherBean2.setWind(nodes.get(14));
-        weatherBeans.add(weatherBean2);
-
-        WeatherBean weatherBean3 = new WeatherBean();
-        List<String> pic3 = new ArrayList<>();
-        pic3.add("a_" + nodes.get(20));
-        pic3.add("a_" + nodes.get(21));
-        weatherBean1.setPics(pic3);
-        weatherBean3.setDate(nodes.get(18));
-        weatherBean3.setTemperature(nodes.get(17));
-        weatherBean3.setWind(nodes.get(19));
-        weatherBeans.add(weatherBean3);
+//        WeatherBean weatherBean2 = new WeatherBean();
+//        List<String> pic2 = new ArrayList<>();
+////        pic2.add("a_" + nodes.get(15));
+////        pic2.add("a_" + nodes.get(16));
+//        weatherBean1.setPics(pic2);
+//        weatherBean2.setDate(nodes.get(13));
+//        weatherBean2.setTemperature(nodes.get(12));
+//        weatherBean2.setWind(nodes.get(14));
+//        weatherBeans.add(weatherBean2);
+//
+//        WeatherBean weatherBean3 = new WeatherBean();
+//        List<String> pic3 = new ArrayList<>();
+////        pic3.add("a_" + nodes.get(20));
+////        pic3.add("a_" + nodes.get(21));
+//        weatherBean1.setPics(pic3);
+//        weatherBean3.setDate(nodes.get(18));
+//        weatherBean3.setTemperature(nodes.get(17));
+//        weatherBean3.setWind(nodes.get(19));
+//        weatherBeans.add(weatherBean3);
         return weatherBeans;
 
 

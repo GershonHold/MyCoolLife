@@ -62,7 +62,7 @@ public class UserService {
         return getOrSendUserInfoThread.getJson();
     }
 
-    public static String updateUserInfo(String name,int sex,String intro,String province,String city) {
+    public static Boolean updateUserInfo(String name,int sex,String intro,String province,String city) {
         UpdateUsrInfoThread updateUsrInfoThread = new UpdateUsrInfoThread("http://47.98.46.194:8080/MyWeb/UpdateUserInfo", name,sex,intro,province,city);
         try {
             updateUsrInfoThread.start();
@@ -70,7 +70,7 @@ public class UserService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return updateUsrInfoThread.getJson();
+        return updateUsrInfoThread.getResult();
     }
 
 

@@ -38,6 +38,7 @@ public class XmlParserUtil {
             Log.e("xml解析异常:", e.getMessage());
             return Collections.emptyList();
         }
+        System.out.println(res+"41");
         return res;
     }
 }

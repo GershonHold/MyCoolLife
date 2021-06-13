@@ -3,6 +3,7 @@ package cn.bluemobi.server;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,6 +26,7 @@ import java.util.regex.PatternSyntaxException;
 import cn.bluemobi.step.step.utils.JsonUtils;
 import cn.bluemobi.step.step.utils.SharedPreferencesUtils;
 
+import static cn.bluemobi.server.service.UserService.getUserInfo;
 import static cn.bluemobi.server.service.UserService.updateUserInfo;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
@@ -89,6 +92,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         radioButton_Woman = (RadioButton) findViewById(R.id.radioButton_Woman);
         city_spinner_profile = (Spinner) findViewById(R.id.city_spinner_profile);
         province_spinner_profile = (Spinner) findViewById(R.id.province_spinner_profile);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
     }
 
     @Override
@@ -165,6 +173,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         Bundle bundle = this.getIntent().getExtras();
         userInfoString = bundle.getString("userInfoString");
+        userInfoString = getUserInfo(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName(),-1,"","");
 
         et_info.setText(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getIntro());
         pre_province = JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getProvince();
@@ -193,9 +202,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         intro = ((EditText) findViewById(R.id.et_info)).getText().toString();
 
         if(!province.equals("")&&!city.equals("")){
-            updateUserInfo(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName(),sex,intro,province,city);
+            if(updateUserInfo(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName(),sex,intro,province,city)){
+                Toast.makeText(ProfileActivity.this, "修改成功！", Toast.LENGTH_SHORT).show();
+                finish();
+            }else{
+                Toast.makeText(ProfileActivity.this, "修改失败！", Toast.LENGTH_SHORT).show();
+            }
         }else{
-            updateUserInfo(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName(),sex,intro,pre_province,pre_city);
+            if(updateUserInfo(JsonUtils.getUserInfoBeanJsonList(userInfoString).get(0).getName(),sex,intro,pre_province,pre_city)){
+                Toast.makeText(ProfileActivity.this, "修改成功！", Toast.LENGTH_SHORT).show();
+                finish();
+            }else{
+                Toast.makeText(ProfileActivity.this, "修改失败！", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -265,8 +284,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                                     });
                         }
-
-
                     }
 
                     @Override
@@ -298,6 +315,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btn_save_profile:
                 save();
+                MainActivity.updateUi();
                 break;
         }
     }

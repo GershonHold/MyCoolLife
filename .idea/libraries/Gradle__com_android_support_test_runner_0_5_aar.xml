@@ -4,12 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/badcbb2f40f68e49e1a10e74ab2bba3c/runner-0.5/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/26cfca671fa2509da09ad4570cd3823da740fe64/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/26cfca671fa2509da09ad4570cd3823da740fe64/output/res" />
-      <root url="file://$USER_HOME$/.android/build-cache/26cfca671fa2509da09ad4570cd3823da740fe64/output/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/badcbb2f40f68e49e1a10e74ab2bba3c/runner-0.5/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/badcbb2f40f68e49e1a10e74ab2bba3c/runner-0.5/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/badcbb2f40f68e49e1a10e74ab2bba3c/runner-0.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/badcbb2f40f68e49e1a10e74ab2bba3c/runner-0.5/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support.test/runner/0.5/589b6022d69d9f1fe8f0a79f10408326a5b0f648/runner-0.5-javadoc.jar!/" />

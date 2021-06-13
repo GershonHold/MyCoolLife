@@ -66,7 +66,7 @@ public class UpdateUsrInfoThread extends Thread {
         }
     }
 
-    public String getJson() {
-        return json;
+    public Boolean getResult() {
+        return result;
     }
 }

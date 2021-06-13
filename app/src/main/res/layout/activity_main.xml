@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
-    tools:context="cn.bluemobi.server.MainActivity">
+    tools:context="cn.bluemobi.server.MainActivity"
+    tools:ignore="MissingClass">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,10 +91,39 @@
                     android:text="查看排行榜"
                     android:textColor="#3E3C3C" />
 
+
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/tv_weather_data"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="98dp"
+                    android:clickable="true"
+                    android:gravity="center" />
+
+            </TableRow>
+
+<!--            <android.support.design.widget.BottomNavigationView-->
+<!--                android:id="@+id/bottomNavigation"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:menu="@menu/bottom_nav_menu">-->
+<!--&lt;!&ndash;                app:itemTextColor="@drawable/main_bottom_navigation"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:itemIconTint="@drawable/main_bottom_navigation"&ndash;&gt;-->
+
+<!--            </android.support.design.widget.BottomNavigationView>-->
+
 
         </LinearLayout>
 
+
     </LinearLayout>
+
+
 
 </RelativeLayout>

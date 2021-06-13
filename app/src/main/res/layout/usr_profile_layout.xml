@@ -63,7 +63,9 @@
             </LinearLayout>
 
         </FrameLayout>
-<ImageView
+
+
+    <ImageView
     android:layout_width="match_parent"
     android:src="@mipmap/sport"
     android:scaleType="centerCrop"
@@ -126,16 +128,15 @@
                     android:id="@+id/province_spinner_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_weight="6"
                     android:entries="@array/province_item" />
 
                 <Spinner
                     android:id="@+id/city_spinner_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:entries="@array/empty_item"
-                     />
+                    android:layout_weight="6"
+                    android:entries="@array/empty_item" />
 
             </LinearLayout>
 
