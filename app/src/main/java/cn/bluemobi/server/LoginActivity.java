@@ -8,10 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
+import cn.bluemobi.server.service.NetworkHelper;
 import cn.bluemobi.server.service.UserService;
-
-import static cn.bluemobi.server.service.UserService.getUserInfo;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -47,35 +45,44 @@ public class LoginActivity extends AppCompatActivity {
                 final String name = ((EditText) findViewById(R.id.etname)).getText().toString();
 
                 String password = ((EditText) findViewById(R.id.etpassword)).getText().toString();
-                if (UserService.signIn(name, password))
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                            LoginIsSuccessful = true;
-                            //后三个参数在此方法中无用，但是必须传入这三个参数
-                            userInfoString = getUserInfo(name,-1,"","");
-                            System.out.println(userInfoString);
-                        }
-                    });
-                else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(LoginActivity.this, "登录失败,请检查密码和用户名是否正确!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                if (LoginIsSuccessful) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("userInfoString", userInfoString);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                try {
+                    if (NetworkHelper.isNetworkAvailable(getApplicationContext())) {
+                        if (UserService.signIn(name, password))
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                                    LoginIsSuccessful = true;
+                                    //后三个参数在此方法中无用，但是必须传入这三个参数
+//                                    userInfoString = getUserInfo(name, -1, "", "");
+//                                    System.out.println(userInfoString);
+                                }
+                            });
+                        else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(LoginActivity.this, "登录失败,请检查密码和用户名是否正确!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        if (LoginIsSuccessful) {
+                            Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("name", name);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    }
+                }catch (Exception e){
+                    e.getStackTrace();
+                    Toast.makeText(LoginActivity.this, "登陆失败，请检查网络是否连接!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         Button btn_signup = (Button) findViewById(R.id.btn_signup);
         btn_signup.setOnClickListener(new View.OnClickListener() {

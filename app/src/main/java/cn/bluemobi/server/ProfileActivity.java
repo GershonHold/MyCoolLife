@@ -315,7 +315,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btn_save_profile:
                 save();
-                MainActivity.updateUi();
                 break;
         }
     }

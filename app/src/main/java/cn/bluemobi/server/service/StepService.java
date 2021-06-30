@@ -132,8 +132,6 @@ public class StepService extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
         super.onCreate();
-
-
         initNotification();
         initBroadcastReceiver();
 
@@ -193,7 +191,7 @@ public class StepService extends Service implements SensorEventListener {
         List<LocalDbStepsBean> list = DbUtils.getQueryByWhere(LocalDbStepsBean.class, "date","name",new String[]{CURRENT_DATE},name);
         if (list.size() == 0 || list.isEmpty()) {
             System.out.println("initTodayData List Empty"+CURRENT_STEP+"name"+name+CURRENT_DATE);
-            CURRENT_STEP = 0;
+//            CURRENT_STEP = 0;
         } else if (list.size() == 1) {
             Log.v(TAG, "StepData=" + list.get(0).toString());
             System.out.println("initTodayData List Not Empty"+CURRENT_STEP);
@@ -452,13 +450,16 @@ public class StepService extends Service implements SensorEventListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Bundle bundle = intent.getExtras();
-        usr_id = bundle.getInt("usr_id");
-        name = bundle.getString("name");
-        localmode = bundle.getBoolean("localmode");
-        System.out.println("onstartcommand"+usr_id+name);
-        initTodayData();
-
+        try {
+            Bundle bundle = intent.getExtras();
+            usr_id = bundle.getInt("usr_id");
+            name = bundle.getString("name");
+            localmode = bundle.getBoolean("localmode");
+            System.out.println("onstartcommand" + usr_id + name);
+            initTodayData();
+        }catch(Exception e){
+            e.getStackTrace();
+        }
         return START_STICKY;
     }
 

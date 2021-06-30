@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TabHost
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1">
+
+    <include layout="@layout/menu_main" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tv_set"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="40dp"
+                                    android:layout_marginLeft="40dp"
+                                    android:drawableLeft="@mipmap/home_question_mark"
+                                    android:drawablePadding="10dp"
+                                    android:gravity="center_vertical"
+                                    android:text="设置锻炼计划"
+                                    android:textColor="#333333" />
+
+                                <TextView
+                                    android:id="@+id/tv_data"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="40dp"
+                                    android:layout_marginLeft="40dp"
+                                    android:drawableLeft="@mipmap/home_statistical"
+                                    android:drawablePadding="10dp"
+                                    android:gravity="center_vertical"
+                                    android:text="查看历史步数"
+                                    android:textColor="#333333" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="220dp"
+                                android:gravity="center_horizontal">
+
+                                <cn.bluemobi.step.view.StepArcView
+                                    android:id="@+id/cc"
+                                    android:layout_width="200dp"
+                                    android:layout_height="200dp"
+                                    android:layout_marginTop="50dp" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:gravity="center_horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_isSupport"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="30dp"
+                                    android:text="该设备支持计步"
+                                    android:textColor="#333333" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="69dp"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tv_check_ranking_list"
+                                    android:layout_width="110dp"
+                                    android:layout_height="40dp"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:text="查看排行榜"
+                                    android:textColor="#3E3C3C" />
+
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/tv_weather_data"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="98dp"
+                                    android:layout_weight="1"
+                                    android:clickable="true"
+                                    android:gravity="center" />
+
+                            </TableRow>
+
+                            <!--            <android.support.design.widget.BottomNavigationView-->
+                            <!--                android:id="@+id/bottomNavigation"-->
+                            <!--                android:layout_width="match_parent"-->
+                            <!--                android:layout_height="wrap_content"-->
+                            <!--                app:menu="@menu/bottom_nav_menu">-->
+                            <!--&lt;!&ndash;                app:itemTextColor="@drawable/main_bottom_navigation"&ndash;&gt;-->
+                            <!--&lt;!&ndash;                app:itemIconTint="@drawable/main_bottom_navigation"&ndash;&gt;-->
+
+                            <!--            </android.support.design.widget.BottomNavigationView>-->
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+

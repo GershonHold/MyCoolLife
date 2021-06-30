@@ -7,7 +7,6 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SimpleAdapter;
@@ -30,8 +29,8 @@ public class HistoryStepDataListView extends ListActivity{
 		super.onCreate(savedInstanceState);
 
 		SimpleAdapter adapter = new SimpleAdapter(this,getData(),R.layout.vlist,
-				new String[]{"date","steps","img"},
-				new int[]{R.id.date,R.id.steps,R.id.img});
+				new String[]{"date","steps"},
+				new int[]{R.id.date,R.id.steps});
 		setListAdapter(adapter);
 	}
 
@@ -49,7 +48,6 @@ public class HistoryStepDataListView extends ListActivity{
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("date", stepsBean.getDate());
 			map.put("steps", stepsBean.getSteps());
-			map.put("img", R.drawable.i1);
 			list.add(map);
             System.out.println(stepsBean.getSi_id()+ " "+stepsBean.getDate()+" "+ stepsBean.getSteps()+" "+ stepsBean.getUsr_id());
         }

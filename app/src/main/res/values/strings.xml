@@ -7,4 +7,6 @@
     <string name="s_myAdapter_btn">myAdapter</string>
     <string name="s_view_btn">mSimpleore</string>
     <string name="list_image">List Image</string>
+    <string name="tabName1">主页</string>
+    <string name="tabName2">导航页</string>
 </resources>
