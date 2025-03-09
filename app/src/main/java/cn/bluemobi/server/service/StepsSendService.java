@@ -10,7 +10,7 @@ public class StepsSendService{
 
 
     public  static boolean queryStepsItems(String date, int steps, int usr_id) {
-        StepsItemsThread loginThread = new StepsItemsThread("http://47.98.46.194:8080/MyWeb/QueryStepsItems", date, steps,usr_id);
+        StepsItemsThread loginThread = new StepsItemsThread("http://{your host}:8080/MyWeb/QueryStepsItems", date, steps,usr_id);
         try {
             loginThread.start();
             loginThread.join();
@@ -21,7 +21,7 @@ public class StepsSendService{
     }
 
     public  static boolean addStepsItems(String date, int steps, int usr_id) {
-        StepsItemsThread loginThread = new StepsItemsThread("http://47.98.46.194:8080/MyWeb/AddStepsItems", date, steps,usr_id);
+        StepsItemsThread loginThread = new StepsItemsThread("http://{your host}:8080/MyWeb/AddStepsItems", date, steps,usr_id);
         try {
             loginThread.start();
             loginThread.join();
@@ -32,7 +32,7 @@ public class StepsSendService{
     }
 
     public  static boolean updateStepsItems(String date, int steps, int usr_id) {
-        StepsItemsThread loginThread = new StepsItemsThread("http://47.98.46.194:8080/MyWeb/UpdateStepsItems", date, steps,usr_id);
+        StepsItemsThread loginThread = new StepsItemsThread("http://{your host}:8080/MyWeb/UpdateStepsItems", date, steps,usr_id);
         try {
             loginThread.start();
             loginThread.join();
@@ -45,7 +45,7 @@ public class StepsSendService{
 
 
     public static String getUserAllStepData(int usr_id) {
-        GetUsersAllStepsDataThread getUsersAllStepsDataThread = new GetUsersAllStepsDataThread("http://47.98.46.194:8080/MyWeb/GetDataForUsers", usr_id);
+        GetUsersAllStepsDataThread getUsersAllStepsDataThread = new GetUsersAllStepsDataThread("http://{your host}:8080/MyWeb/GetDataForUsers", usr_id);
         try {
             getUsersAllStepsDataThread.start();
             getUsersAllStepsDataThread.join();
@@ -56,7 +56,7 @@ public class StepsSendService{
     }
 
     public static String getUserOneDayStepData(int usr_id, String date) {
-        GetUsersOneDayStepsDataThread getUsersOneDayStepsDataThread = new GetUsersOneDayStepsDataThread("http://47.98.46.194:8080/MyWeb/GetStepDatasByDateUsrid", usr_id,date);
+        GetUsersOneDayStepsDataThread getUsersOneDayStepsDataThread = new GetUsersOneDayStepsDataThread("http://{your host}:8080/MyWeb/GetStepDatasByDateUsrid", usr_id,date);
         try {
             getUsersOneDayStepsDataThread.start();
             getUsersOneDayStepsDataThread.join();
@@ -67,7 +67,7 @@ public class StepsSendService{
     }
 
     public static String getOneDayRankStepData(String date) {
-        GetOneDayRankDataThread getOneDayRankDataThread = new GetOneDayRankDataThread("http://47.98.46.194:8080/MyWeb/GetOneDayRankDataForUsr", date);
+        GetOneDayRankDataThread getOneDayRankDataThread = new GetOneDayRankDataThread("http://{your host}:8080/MyWeb/GetOneDayRankDataForUsr", date);
         try {
             getOneDayRankDataThread.start();
             getOneDayRankDataThread.join();
