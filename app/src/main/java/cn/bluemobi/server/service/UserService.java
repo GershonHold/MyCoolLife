@@ -5,9 +5,10 @@ import cn.bluemobi.server.thread.LoginThread;
 import cn.bluemobi.server.thread.QueryNameThread;
 import cn.bluemobi.server.thread.UpdateUsrInfoThread;
 
+//本应用需要在服务器上部署一个服务端程序，并配置{your host},后期该服务端程序将上传为另一项目
 public class UserService {
     public static boolean signIn(String name, String password) {
-        LoginThread loginThread = new LoginThread("http://47.98.46.194:8080/MyWeb/SignIn", name, password,-1,"","");
+        LoginThread loginThread = new LoginThread("http://{your host}:8080/MyWeb/SignIn", name, password,-1,"","");
         try {
             loginThread.start();
             loginThread.join();
@@ -19,7 +20,7 @@ public class UserService {
     }
 
     public static boolean signUp(String name, String password,int sex,String province,String city) {
-        LoginThread loginThread = new LoginThread("http://47.98.46.194:8080/MyWeb/SignUp", name, password,sex,province,city);
+        LoginThread loginThread = new LoginThread("http://{your host}:8080/MyWeb/SignUp", name, password,sex,province,city);
         try {
             loginThread.start();
             loginThread.join();
@@ -30,7 +31,7 @@ public class UserService {
     }
 
     public static String getUserInfo(String name,int sex,String province,String city) {
-        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://47.98.46.194:8080/MyWeb/GetUserInfoForUser", name,sex,province,city);
+        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://{your host}:8080/MyWeb/GetUserInfoForUser", name,sex,province,city);
         try {
             getOrSendUserInfoThread.start();
             getOrSendUserInfoThread.join();
@@ -41,7 +42,7 @@ public class UserService {
     }
 
     public static boolean queryUserName(String name) {
-        QueryNameThread queryNameThread = new QueryNameThread("http://47.98.46.194:8080/MyWeb/QueryUserName", name);
+        QueryNameThread queryNameThread = new QueryNameThread("http://{your host}:8080/MyWeb/QueryUserName", name);
         try {
             queryNameThread.start();
             queryNameThread.join();
@@ -52,7 +53,7 @@ public class UserService {
     }
 
     public static String addUserInfo(String name,int sex,String province,String city) {
-        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://47.98.46.194:8080/MyWeb/AddUsrInfo", name,sex,province,city);
+        GetOrSendUserInfoThread getOrSendUserInfoThread = new GetOrSendUserInfoThread("http://{your host}:8080/MyWeb/AddUsrInfo", name,sex,province,city);
         try {
             getOrSendUserInfoThread.start();
             getOrSendUserInfoThread.join();
@@ -63,7 +64,7 @@ public class UserService {
     }
 
     public static Boolean updateUserInfo(String name,int sex,String intro,String province,String city) {
-        UpdateUsrInfoThread updateUsrInfoThread = new UpdateUsrInfoThread("http://47.98.46.194:8080/MyWeb/UpdateUserInfo", name,sex,intro,province,city);
+        UpdateUsrInfoThread updateUsrInfoThread = new UpdateUsrInfoThread("http://{your host}:8080/MyWeb/UpdateUserInfo", name,sex,intro,province,city);
         try {
             updateUsrInfoThread.start();
             updateUsrInfoThread.join();
