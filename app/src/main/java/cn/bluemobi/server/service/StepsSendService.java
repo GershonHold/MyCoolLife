@@ -8,7 +8,7 @@ import cn.bluemobi.server.thread.StepsItemsThread;
 
 public class StepsSendService{
 
-
+    //记录的步数会上传服务器，服务器端程序后续会上传为另一项目
     public  static boolean queryStepsItems(String date, int steps, int usr_id) {
         StepsItemsThread loginThread = new StepsItemsThread("http://{your host}:8080/MyWeb/QueryStepsItems", date, steps,usr_id);
         try {
